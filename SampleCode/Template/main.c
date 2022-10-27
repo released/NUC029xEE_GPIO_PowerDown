@@ -35,12 +35,85 @@ void EINT1_IRQHandler(void)
     printf("EINT1 occurred.\n");
 }
 
+void IO_setting(void)
+{
+    //  GPIO_SetMode(PA,0xFFFF,GPIO_PMD_QUASI);
+    //  GPIO_SetMode(PB,0xFFFF,GPIO_PMD_QUASI);
+    //  GPIO_SetMode(PC,0xFFFF,GPIO_PMD_QUASI);
+    //  GPIO_SetMode(PE, BIT5, GPIO_PMD_QUASI);
+
+    GPIO_SetMode(PB,0xFFFF,GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PC,0xFFFF,GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PE,0xFFFF,GPIO_PMD_OUTPUT);
+
+    GPIO_SetMode(PA, BIT5, GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PA, BIT6, GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PA, BIT8, GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PA, BIT9, GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PA, BIT10, GPIO_PMD_OUTPUT);
+    GPIO_SetMode(PA, BIT11, GPIO_PMD_OUTPUT);
+
+    PA5 = 1;
+    PA6 = 1;
+    PA8 = 1;
+    PA9 = 1;
+    PA10 = 1;
+    PA11 = 1;
+
+    PA12 = 1;
+    PA13 = 1;
+    PA14 = 1;
+    PA15 = 1;
+
+    // PB0 = 1;
+    // PB1 = 1;
+    PB2 = 1;
+    PB3 = 1;
+
+    PB4 = 1;
+    PB5 = 1;
+    PB6 = 1;
+    PB7 = 1;
+
+    PB8 = 1;
+    PB9 = 1;
+    PB10 = 1;
+    PB11 = 1;
+
+    PB13 = 1;
+    // PB14 = 1;
+    // PB15 = 1;
+
+    PC0 = 1;
+    PC1 = 1;
+    PC2 = 1;
+    PC3 = 1;
+
+    PC6 = 1;
+    PC7 = 1;
+
+    PC8 = 1;
+    PC9 = 1;
+    PC10 = 1;
+    PC11 = 1;
+
+    PC14 = 1;
+
+    PC15 = 1;
+
+    PE5 = 1 ;    
+}
+
 void PowerDownFunction(void)
 {
     printf("System enter to power-down mode.\n\n");
 
     /* To check if all the debug messages are finished */
     while(IsDebugFifoEmpty() == 0);
+
+    IO_setting();
+
+    SYS_UnlockReg();    
 
     SCB->SCR = 4;
 
@@ -419,11 +492,10 @@ void SYS_Init(void)
     CLK_EnableModuleClock(UART0_MODULE);
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HIRC, CLK_CLKDIV_UART(1));
 	
-    CLK_EnableModuleClock(TMR1_MODULE);
-  	CLK_SetModuleClock(TMR1_MODULE, CLK_CLKSEL1_TMR1_S_HIRC, 0);
+    // CLK_EnableModuleClock(TMR1_MODULE);
+  	// CLK_SetModuleClock(TMR1_MODULE, CLK_CLKSEL1_TMR1_S_HIRC, 0);
 
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
-
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
 
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB14_Msk | SYS_GPB_MFP_PB15_Msk);
